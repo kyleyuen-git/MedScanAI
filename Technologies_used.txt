@@ -1,1 +1,13 @@
-Something
+ScikitLearn
+Python
+Jupyter Notebook
+React
+Javascript
+
+Amazon:
+S3
+Bedrock
+SageMaker AI
+Lex
+Lambda
+Textract
