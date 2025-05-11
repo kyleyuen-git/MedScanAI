@@ -1,5 +1,9 @@
 # MediScanAI
 
+Contributions : Jongmin Hwang made a model in SageMaker AI that takes the symptoms and output diagnosis as well as lambda functions connecting to it.
+  Kyle Yuen did Lambda, S3, and Textract that were in charge of taking the pdf of patient data and converting it into form that the Bedrock can interpret to produce final output.
+  Mihir Borkar did Bedrock, Lex, and Cloudfront that were in charge of Chatbot that interacts with patients to produce output, survey that takes patient data and produces output, as well as lambda functions that were connected to those.
+
 🧠 MediScan AI
 Your Smart Clinical Companion
 
