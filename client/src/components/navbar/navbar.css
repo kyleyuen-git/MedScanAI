@@ -1,0 +1,121 @@
+.navbar {
+  background-color: rgb(34, 32, 32);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  box-sizing: border-box;
+}
+
+.nav-content {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav-items {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-title {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+}
+
+.logo {
+  width: clamp(40px, 5vw, 130px);
+  height: auto;
+}
+
+.cc {
+  color: white;
+  font-size: 1.3rem;
+  padding: 2px 12px;
+  text-decoration: none;
+}
+
+.nav-item {
+  color: white;
+  font-size: 1.15rem;
+  padding: 1px 12px;
+  text-decoration: none;
+}
+
+.nav-item,
+.nav-item:hover,
+.nav-item:focus,
+.nav-item:visited {
+  text-decoration: none;
+}
+
+.nav-item:hover {
+  color: white;
+  background: linear-gradient(to right, orange, orangered, red);
+  padding: 1px 12px;
+  border-radius: 5px;
+}
+
+/* Dropdown wrapper */
+.dropdown {
+  position: relative;
+}
+
+/* Dropdown content (visible but leaks out left/right) */
+.nav-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 160px;
+  background-color: white;
+  border: 1px solid #999;
+  padding: 8px 0;
+  border-radius: 8px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Dropdown links */
+.create-events {
+  color: black;
+  background-color: white;
+  text-decoration: none;
+  font-size: 0.9rem;
+  padding: 6px 12px;
+  transition: all 0.2s ease;
+}
+
+.create-events:hover {
+  background-color: black;
+  color: white;
+  border-radius: 4px;
+}
+
+/* Avatar inside login box */
+.avatar {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Login trigger box (correct height, but dropdown leaks out visually) */
+.user {
+  margin-top: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 6px 10px;
+  background-color: white;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  min-width: 200px;
+  max-width: 75%;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
