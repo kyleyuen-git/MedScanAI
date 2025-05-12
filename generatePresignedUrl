@@ -1,0 +1,32 @@
+import json, boto3, os, uuid
+
+s3 = boto3.client("s3")
+BUCKET = os.environ["UPLOAD_BUCKET"]
+
+def lambda_handler(event, context):
+    # 1️⃣  generate a unique object key
+    object_key = f"userUploads/{uuid.uuid4()}.pdf"
+    
+    # 2️⃣  create a 60‑second PUT URL
+    url = s3.generate_presigned_url(
+        "put_object",
+        Params={
+            "Bucket": BUCKET,
+            "Key": object_key,
+            "ContentType": "application/pdf"
+        },
+        ExpiresIn=60
+    )
+    
+    # 3️⃣  return it to the browser
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Access-Control-Allow-Origin": "*",   # dev‑only
+            "Access-Control-Allow-Headers": "*"
+        },
+        "body": json.dumps({
+            "uploadUrl": url,
+            "objectKey": object_key
+        })
+    }
