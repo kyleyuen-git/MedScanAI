@@ -1,0 +1,36 @@
+import json
+import boto3
+
+region = 'us-west-2'
+bedrock_runtime_client = boto3.client('bedrock-agent-runtime', region_name=region)
+
+def lambda_handler(event, context):
+    user_request = json.loads(event['body'])
+    print(event)
+    print(user_request.get("message"))
+    response = bedrock_runtime_client.invoke_agent(
+        agentId="SVFQLCSLWM",
+        agentAliasId="V6MBUWOIGC",
+        sessionId="mysession",
+        inputText=user_request.get("message")
+        # inputText = "You are a clinical AI assistant. Given a patient case, generate a structured medical response in 30–40 words using the format: Condition: Symptoms: Allergies: Recommended Tests/Treatments: Prescriptions/Procedures: Recovery Timeline: Do not include or invent lab values or vitals. Recommend specific medications (e.g., azithromycin, amoxicillin) and common diagnostic steps (e.g., blood culture, chest X-ray). Here is the patient case: The patient is a 46-year-old male presenting with persistent fever, non-productive cough, fatigue, and shortness of breath that began five days ago. He reports a sharp, localized chest pain on inspiration and generalized body aches. No recent travel, but he works in a crowded office environment. Oxygen saturation is 92% on room air. Physical examination reveals decreased breath sounds in the right lower lung field, with dullness to percussion. Heart rate is elevated, and blood pressure is normal. Laboratory tests indicate inflammation and elevated white blood cell count. Chest X-ray shows right lower lobe consolidation. The patient denies any history of chronic lung disease, recent antibiotic use, or immunocompromising conditions."
+    )
+    print(response)
+    event_stream = response['completion']
+    final_answer = None
+    try:
+        for event in event_stream:
+            if 'chunk' in event:
+                data = event['chunk']['bytes']
+                final_answer = data.decode('utf8')
+                print(f"Final answer ->\n{final_answer}")
+                end_event_received = True
+            elif 'trace' in event:
+                print(json.dumps(event['trace'], indent=2))
+            else: 
+                raise Exception("unexpected event.", event)
+    except Exception as e:
+        print(e)
+        raise Exception("unexpected event.",e)
+    print('final answer:', final_answer)
+    return final_answer
