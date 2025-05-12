@@ -1,0 +1,46 @@
+import json
+import boto3
+
+# Initialize the SageMaker runtime client
+runtime = boto3.client('sagemaker-runtime')
+
+# Replace with your actual endpoint name
+ENDPOINT_NAME = 'sagemaker-scikit-learn-2025-05-11-19-28-17-986'
+
+def lambda_handler(event, context):
+    try:
+        # Step 1: Extract input text from the frontend (expects a field 'text' in the JSON body)
+        input_text = event.get('text')
+        
+        if not input_text:
+            return {
+                'statusCode': 400,
+                'body': json.dumps('No "text" field found in input.')
+            }
+
+        # Step 2: Prepare the payload in the correct format for the model
+        # Wrap the text in a list of dictionaries as the model expects
+        payload = [{"text": input_text}]  # Make sure it's a list of dictionaries
+
+        # Step 3: Call SageMaker endpoint
+        response = runtime.invoke_endpoint(
+            EndpointName=ENDPOINT_NAME,
+            ContentType='application/json',  # Correct content type for JSON input
+            Body=json.dumps(payload)  # Send a list of dictionaries as JSON
+        )
+
+        # Step 4: Parse prediction result
+        result = response['Body'].read().decode('utf-8')
+
+        # Step 5: Return the result to the frontend
+        return {
+            'statusCode': 200,
+            'body': json.dumps({'prediction': result})
+        }
+
+    except Exception as e:
+        # If there's an error, return the error message
+        return {
+            'statusCode': 500,
+            'body': json.dumps(f"Error: {str(e)}")
+        }
